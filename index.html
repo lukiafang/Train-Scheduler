@@ -1,0 +1,107 @@
+<DOCTYPE html></DOCTYPE>
+<html>
+        <meta charset="UTF-8">
+        <title>Train Scheduler</title>
+        
+        <!-- Bootstrap -->
+        <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css">
+        
+    <title>train scheduler</title>
+    <body>
+        <div class="container" id="show">
+             </div>
+             <div id="show1"></div>
+             <div id="show2"></div>
+             <div id="show3"></div>
+             <div id="show4">ALL</div>
+        <div class="container" id="add" >
+            <form>
+                <div class="form-group">
+                <label>Train Name</label>
+                <input type="text" class="form-control" id="trainName">
+                </div>
+                <div class="form-group">
+                    <label>Destination</label>
+                    <input type="text" class="form-control" id="Destination">
+                </div>
+                <div class="form-group">
+                        <label>First Train Time (HH:mm military time)</label>
+                        <input type="text" class="form-control" id="firstTrain">
+                </div>
+                <div class="form-group">
+                        <label>Frequency</label>
+                        <input type="text" class="form-control" id="frequency">
+                        </div>
+                <button type="submit" id="topA" class="btn btn-primary">Submit</button>
+            </form>
+            
+
+        </div>
+   
+    <script src="https://code.jquery.com/jquery-3.3.1.js" integrity="sha256-2Kok7MbOyxpgUVvAk/HJ2jigOSYS2auK4Pfzbm7uH60=" crossorigin="anonymous"></script>
+    
+    <script src="https://www.gstatic.com/firebasejs/5.3.0/firebase.js"></script>
+        <script>
+    // Initialize Firebase
+        var config = {
+    apiKey: "AIzaSyAwGJNEYt1reHsiJDBxAkcIRqePa2tKRvc",
+    authDomain: "train-bf010.firebaseapp.com",
+    databaseURL: "https://train-bf010.firebaseio.com",
+    projectId: "train-bf010",
+    storageBucket: "train-bf010.appspot.com",
+    messagingSenderId: "471039038447"
+  };
+  firebase.initializeApp(config);
+
+  var database=firebase.database();
+ // var clickCounter=0;
+  var trainName="";
+  var destination="";
+  var firstTrainTime="";
+  var frequency="";
+
+
+  $("#topA").on("click", function(){
+      //clickCounter++;
+      var trainName=$("#trainName").val().trim();
+      var destination=$("#Destination").val().trim();
+      var firstTrainTime=$("#firstTrain").val().trim();
+      var frequency=$("#frequency").val().trim();
+
+      console.log(trainName)
+      database.ref().push({
+         // clickcount:clickCounter,
+         trainName:trainName,
+         destination:destination,
+         firstTrainTime:firstTrainTime,
+         frequency:frequency,
+
+         youyou:"leggoooo",
+
+
+    
+
+      });
+      
+  });
+  database.ref().on("child_added", function(childSnapshot){
+      console.log(childSnapshot.val().trainName);
+
+      $("#show4").append("<div class='well'><span class='member-name'> " + childSnapshot.val().trainName +
+        " </span><span class='member-email'> " + childSnapshot.val().destination +
+          " </span><span class='member-age'> " + childSnapshot.val().firstTrainTime +
+            " </span><span class='member-comment'> " + childSnapshot.val().frequency + " </span></div>");
+
+      
+
+  });
+ // database.ref().orderByChild("dateAdded").limitToLast(1).on("child_added",function(snapshot){
+  //  $("#show").html(snapshot.val().trainName);
+  //    $("#show1").html(snapshot.val().destination);
+   //   $("#show2").html(snapshot.val().firstTrainTime);
+  //    $("#show3").html(snapshot.val().frequency);
+  // });
+
+</script>
+ </body>
+</html>
