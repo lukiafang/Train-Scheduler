@@ -110,18 +110,18 @@
             </article>
    
    
-    
-    <script>
-        function displayRealTime() {
-        setInterval(function(){
-             $('#current-time').html(moment().format('hh:mm:ss A'))
-                }, 1000);
-            }
-            displayRealTime();
+            <!--display current time-->
+                 <script>
+                         function displayRealTime() {
+                              setInterval(function(){
+                                 $('#current-time').html(moment().format('hh:mm:ss A'))
+                          }, 1000);
+                        }
+                    displayRealTime();
          
       
 
-    </script>
+                </script>
         <script>
     // Initialize Firebase
              var config = {
@@ -144,46 +144,76 @@
              var frequency="";
 
 
-  $("#topA").on("click", function(){
-      //clickCounter++;
-      var trainName=$("#trainName").val().trim();
-      var destination=$("#Destination").val().trim();
-      var firstTrainTime=$("#firstTrain").val().trim();
+         $("#topA").on("click", function(){
+                
+               var trainName=$("#trainName").val().trim();
+              var destination=$("#Destination").val().trim();
+              var firstTrainTime=$("#firstTrain").val().trim();
 
-      var frequency=$("#frequency").val().trim();
+                  var frequency=$("#frequency").val().trim();
 
-      console.log(trainName)
-      database.ref().push({
-         // clickcount:clickCounter,
-         trainName:trainName,
-         destination:destination,
-         firstTrainTime:firstTrainTime,
-         frequency:frequency,
+             //  console.log(trainName);
+             //  console.log(destination);
+            //   console.log(frequency);
 
-         youyou:"leggoooo",
+                  database.ref().push({
+                   
+                 trainName:trainName,
+                     destination:destination,
+                firstTrainTime:firstTrainTime,
+                frequency:frequency,
 
-       
+            });});
+
+         database.ref().on("child_added", function(childSnapshot){
+              console.log(childSnapshot.val().trainName);
+
+              var tFrequency = childSnapshot.val().frequency;
+              
+              console.log(tFrequency);
+
+              var firstTime =childSnapshot.val().firstTrainTime
+              ;
+              console.log(firstTime);
+
+              var firstTimeConverted = moment(firstTime, "HH:mm").subtract(1, "years");
+            console.log(firstTimeConverted);
+
+                // Current Time
+                var currentTime = moment();
+             console.log("CURRENT TIME: " + moment(currentTime).format("hh:mm"));
+
+                // Difference between the times
+                 diffTime = moment().diff(moment(firstTimeConverted), "minutes");
+             console.log("DIFFERENCE IN TIME: " + diffTime);
+
+             // Time apart (remainder)
+            var tRemainder = diffTime % tFrequency;
+            console.log(tRemainder);
+
+             // Minute Until Train
+             var tMinutesTillTrain = tFrequency - tRemainder;
+              console.log("MINUTES TILL TRAIN: " + tMinutesTillTrain);
+
+             // Next Train
+                var nextTrain = moment().add(tMinutesTillTrain, "minutes");
+               var arrivalTime= moment(nextTrain).format("hh:mm:A");
+             console.log("ARRIVAL TIME: " + moment(nextTrain).format("hh:mm"));
 
 
-    
-
-      });
-      
-  });
-  database.ref().on("child_added", function(childSnapshot){
-      console.log(childSnapshot.val().trainName);
-
-      $("#ttbb").append("<tr>","<th>"+childSnapshot.val().trainName +"</th>",
-        "<td>"  + childSnapshot.val().destination +"</td>",
+              $("#ttbb").append("<tr>","<th>"+childSnapshot.val().trainName +"</th>",
+              "<td>"  + childSnapshot.val().destination +"</td>",
           
-            " <td> " + childSnapshot.val().frequency + " </td>",
-            " <td>" + childSnapshot.val().firstTrainTime +"</td>",
-            "<td>"+"</td>",
-            "<td>"+"</td>","</tr>");
+                  " <td> " + childSnapshot.val().frequency + " </td>",
+                
+                  "<td>"+arrivalTime+"</td>",
+                 "<td>"+ tMinutesTillTrain+"</td>",
+                 
+                 "</tr>");
 
       
 
-  });
+                     });
  // database.ref().orderByChild("dateAdded").limitToLast(1).on("child_added",function(snapshot){
   //  $("#show").html(snapshot.val().trainName);
   //    $("#show1").html(snapshot.val().destination);
@@ -192,6 +222,7 @@
   // });
 
         </script>
+       
        
 
     </body>
