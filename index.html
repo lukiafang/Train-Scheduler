@@ -1,6 +1,6 @@
 <!DOCTYPE html>
 <html>
-    <head></head>
+    <head>
         <meta charset="UTF-8">
         <title>Train Scheduler</title>
         
@@ -16,17 +16,21 @@
         <!--firbase-->
         <script src="https://www.gstatic.com/firebasejs/5.3.0/firebase.js"></script>
 
-        
+       
 
+    </head>   
+        
         
     
         <body class="container">
-            <div id="current-time">current time</div>
-            <div class="jumbotron" id="show">
+            
+            <div class="jumbotron text-center" id="show" >
+                    <h1>Chee Chee Choo Choo</h1>
+                    <h2>Make A Train Schedule</h2>
+                    <h6>Name a train and where it's going to. By setting a frequency by minutes you'll know when to catch the next one. </h6>
+            
                 </div>
-             <div id="show1"></div>
-             <div id="show2"></div>
-             <div id="show3"></div>
+
              <div id="show4" class="jumbotron">
                     <table class="table" >
                         Current Train Schedule
@@ -46,7 +50,7 @@
                  </div>
         <div class="jumbotron" id="add" >
             <form>
-                Add Train
+                Add Train<div id="current-time" class="float-right">current time</div>
                 <div class="form-group">
                 <label>Train Name</label>
                 <input type="text" class="form-control" id="trainName">
@@ -76,27 +80,21 @@
         
         
         <article>
-                <div class="demo">
-                    <p>
-                        <input id="timeformatExample1" type="text" class="time" />
-                        <input id="timeformatExample2" type="text" class="time" />
-                    </p>
-                </div>
+                <!--jquery time picker-->
                 <script>
                 $(function() {
                     $('#firstTrain').timepicker({ 'timeFormat': 'H:i' });
-                    $('#timeformatExample1').timepicker({ 'timeFormat': 'H:i:s' });
-                    $('#timeformatExample2').timepicker({ 'timeFormat': 'h:i A' });
+
                 });
                 </script>
-            </article>
+        </article>
    
    
             <!--display current time-->
                  <script>
                          function displayRealTime() {
                               setInterval(function(){
-                                 $('#current-time').html(moment().format('hh:mm:ss A'))
+                                 $('#current-time').html("Current Time: "+ moment().format('hh:mm:ss A'))
                           }, 1000);
                         }
                     displayRealTime();
@@ -169,7 +167,7 @@
                  diffTime = moment().diff(moment(firstTimeConverted), "minutes");
              console.log("DIFFERENCE IN TIME: " + diffTime);
 
-             // Time apart (remainder)
+             // Time apart 
             var tRemainder = diffTime % tFrequency;
             console.log(tRemainder);
 
@@ -196,12 +194,7 @@
       
 
                      });
- // database.ref().orderByChild("dateAdded").limitToLast(1).on("child_added",function(snapshot){
-  //  $("#show").html(snapshot.val().trainName);
-  //    $("#show1").html(snapshot.val().destination);
-   //   $("#show2").html(snapshot.val().firstTrainTime);
-  //    $("#show3").html(snapshot.val().frequency);
-  // });
+
 
         </script>
        
